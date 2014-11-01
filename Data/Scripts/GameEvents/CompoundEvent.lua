@@ -216,9 +216,11 @@ function CompoundEvent.tick(rController, dt, tPersistentState,tTransientState)
         end
     end
     
-    if not next(tPersistentState.tEvents) and tPersistentState.bMega then
-        rController.tS.bRanMegaEvent = true
-		rController.tS.nMegaEventStartTime = GameRules.elapsedTime
+    if not next(tPersistentState.tEvents) then
+        if tPersistentState.bMega then
+            rController.tS.bRanMegaEvent = true
+            rController.tS.nMegaEventStartTime = GameRules.elapsedTime
+        end
         return true
     end
 end

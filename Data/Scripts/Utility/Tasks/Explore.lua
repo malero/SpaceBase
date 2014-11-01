@@ -79,7 +79,7 @@ function Explore:_selectUnexploredRoom()
 		end
     end
 	-- "done exploring" log
-	if nExploredRooms == nRooms and not self.rChar:retrieveMemory(Character.MEMORY_EXPLORED_RECENTLY) then
+	if nExploredRooms == nRooms and self.nExploreStartTime and not self.rChar:retrieveMemory(Character.MEMORY_EXPLORED_RECENTLY) then
 		-- saw combat vs didn't see combat variants
 		local tLogType = Log.tTypes.DUTY_SECURITY_EXPLORED_NOCOMBAT
 		local _,nLastCombat = self.rChar:retrieveMemory(Character.MEMORY_ENTERED_COMBAT_RECENTLY)
@@ -126,17 +126,6 @@ function Explore:_enteredNewTile()
                 end
             end
         end
-        --[[
-		local _,bAdjacent = self:_selectUnexploredRoom()
-		if bAdjacent then
-			self.bGoingToBeacon = false
-		else
-			local nTeam = Room.getTeamAtTile(tx,ty,1)
-			if nTeam and nTeam ~= Character.TEAM_ID_PLAYER then
-				self.bGoingToBeacon = false
-			end
-		end
-        ]]--
 
 		if not self.bGoingToBeacon then
 			self:_waitAtBeacon()

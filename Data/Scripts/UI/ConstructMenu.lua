@@ -103,9 +103,13 @@ function m.create()
     end
     
     function Ob:setModeSelected(rModeButton)
+        for k,v in pairs(self.tHotkeyButtons) do
+            v:setSelected(false)
+        end
+        --if self.rCurModeButton then self.rCurModeButton:setSelected(false) end
         self.rCurModeButton = rModeButton
         if rModeButton then
-            self.rSelectionHighlight:setVisible(true)
+            --self.rSelectionHighlight:setVisible(true)
             if rModeButton == self.rAreaButton then
                 g_GameRules.setUIMode(g_GameRules.MODE_BUILD_ROOM)
             elseif rModeButton == self.rWallButton then
@@ -119,8 +123,9 @@ function m.create()
             elseif rModeButton == self.rEraseButton then
                 g_GameRules.setUIMode(g_GameRules.MODE_CANCEL_COMMAND, CommandObject.CANCEL_PARAM_BUILD)
             end
-            local x, y = self.rCurModeButton:getLoc()
-            self.rSelectionHighlight:setLoc(x, y)
+            --local x, y = self.rCurModeButton:getLoc()
+            self.rCurModeButton:setSelected(true)
+            --self.rSelectionHighlight:setLoc(x, y)
         else
             self.rSelectionHighlight:setVisible(false)
         end

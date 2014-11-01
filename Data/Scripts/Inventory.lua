@@ -102,9 +102,6 @@ end
 
 function Inventory.portFromSave(sKey,tItem)
     if not tItem then return end
-    if tItem.tag and tItem.tag.bInvalid then 
-        return 
-    end
     if type(tItem) == 'number' then
         -- old save
         if sKey and InventoryData.tTemplates[sKey] then
@@ -112,6 +109,8 @@ function Inventory.portFromSave(sKey,tItem)
         else
             tItem = nil
         end
+    elseif tItem.tag and tItem.tag.bInvalid then 
+        return 
     elseif not tItem.tag then
         if InventoryData.tTemplates[tItem.sName] then
             if InventoryData.tTemplates[tItem.sName].bStackable then
