@@ -1,0 +1,9 @@
+return {
+
+	sParentMaterial = "Materials/Effects/ParticleBase.material",
+	
+	sTexture = "Effects/Textures/Sphere",
+
+	blendMode = { MOAIProp.GL_ONE, MOAIProp.GL_ONE_MINUS_SRC_ALPHA },
+
+}

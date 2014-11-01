@@ -1,0 +1,23 @@
+return {
+
+	sShader = "Shaders/blit.shd",
+	
+	tShaderValues = {
+		{
+			sName = "g_vScale",
+			type = MOAIMaterial.VALUETYPE_VEC2,
+			value = {1,1}
+		},
+		{
+			sName = "g_vOffset",
+			type = MOAIMaterial.VALUETYPE_VEC2,
+			value = {0,0},
+		},
+		{
+			sName = "g_vColor",
+			type = MOAIMaterial.VALUETYPE_VEC4,
+			value = {1,1,1,1},
+		},
+    },
+
+}   

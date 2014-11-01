@@ -1,0 +1,23 @@
+return {
+
+	sShader = "Shaders/walllight.shd",
+	
+	tShaderValues = {
+		{
+			sName = "g_vColor",
+			type = MOAIMaterial.VALUETYPE_VEC4,
+			value = {1,1,1,1},
+		},
+		{
+			sName = "g_samEmergencyColors", 
+			type = MOAIMaterial.VALUETYPE_TEXTURE,
+			value = "White"
+		},
+		{
+			sName = "g_samLightMapColors", 
+			type = MOAIMaterial.VALUETYPE_TEXTURE,
+			value = "White"
+		},
+    },
+
+}   

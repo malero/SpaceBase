@@ -1,0 +1,24 @@
+return {
+
+	sShader = "Shaders/outlines.shd",
+	
+	tShaderValues = {
+		{
+			sName = "g_fOutlineWidth",
+			type = MOAIMaterial.VALUETYPE_FLOAT,
+			value = .1,
+		},
+
+		{
+			sName = "g_vOutlineColor",
+			type = MOAIMaterial.VALUETYPE_VEC4,
+			value = {0,0,0,0},
+		},
+		{
+			sName = "g_vPixelSize",
+			type = MOAIMaterial.VALUETYPE_VEC2,
+			value = {0.001,0.001},
+		},
+    },
+
+}   

@@ -1,0 +1,17 @@
+return {
+
+	sShader = "Shaders/tv_noise.shd",
+	 
+	tShaderValues = {
+		{
+			sName = "g_fTime",
+			type = MOAIMaterial.VALUETYPE_FLOAT,
+			value = 0,
+		},
+		{
+			sName = "g_vColor",
+			type = MOAIMaterial.VALUETYPE_VEC4,
+			value = {1,1,1,1},
+		},
+    },
+}  

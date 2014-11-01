@@ -1,0 +1,32 @@
+return {
+
+	sShader = "Shaders/uiscreen.shd",
+	
+	tShaderValues = {
+		{
+			sName = "g_fTime",
+			type = MOAIMaterial.VALUETYPE_FLOAT,
+			value = 0,
+		},
+		{
+			sName = "g_samEffectMask", 
+			type = MOAIMaterial.VALUETYPE_TEXTURE,
+			value = "White"
+		},
+		{
+			sName = "g_samScanline", 
+			type = MOAIMaterial.VALUETYPE_TEXTURE,
+			value = "Effects/Textures/scanlines"
+		},		
+		{
+			sName = "g_vPixelSize",
+			type = MOAIMaterial.VALUETYPE_VEC2,
+			value = {0.001,0.001},
+		},
+		{
+			sName = "g_fUIFade",
+			type = MOAIMaterial.VALUETYPE_FLOAT,
+			value = 1.0,
+		}
+    },
+}   

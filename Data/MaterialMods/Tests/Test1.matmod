@@ -1,0 +1,20 @@
+return {
+
+    -- Materials in the selector WON'T get the modifier
+    bExcludingSelector = true,
+    tMaterialSelector = { "Materials/Excluded", },
+    
+    tColor = { 
+    
+        tValue = { 1,0,0,1 },
+        
+        fadeIn = 0.5,
+        fadeOut = 0.25,
+        
+        animMode = MOAIMaterial.ANIMMODE_SIN,
+        animRate = 1.0,
+        animScale = 1.0,
+    },
+    
+    --sTexture = "white",
+}

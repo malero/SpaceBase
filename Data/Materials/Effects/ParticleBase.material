@@ -1,0 +1,35 @@
+return {
+
+	sShader = "Shaders/particle.shd",
+	
+	sTexture = "white",
+	
+	tShaderValues = {
+		{
+			sName = "g_vScale",
+			type = MOAIMaterial.VALUETYPE_VEC3,
+			value = { 1.0, 1.0, 1.0 },
+		},
+		{
+			sName = "g_vParticleToWorld",
+			type = MOAIMaterial.VALUETYPE_VEC3,
+		},
+	},
+	
+	tDynamicShaderValues = {
+		{
+			sName = "g_vCameraRight",
+			type = MOAIMaterial.DYNAMICVALUE_CAMERA_RIGHT,
+		},
+		{
+			sName = "g_vCameraUp",
+			type = MOAIMaterial.DYNAMICVALUE_CAMERA_UP,
+		},
+		{
+			sName = "g_vCameraView",
+			type = MOAIMaterial.DYNAMICVALUE_CAMERA_VIEW,
+		},
+	},
+	
+	blendMode = { MOAIProp.GL_SRC_ALPHA, MOAIProp.GL_ONE_MINUS_SRC_ALPHA },
+}

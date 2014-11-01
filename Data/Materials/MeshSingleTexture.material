@@ -1,0 +1,28 @@
+return {
+
+    sShader = "Shaders/mesh_singletexture.shd",
+
+	tShaderValues = {
+		{
+			sName = "g_vHighlightColor",
+			type = MOAIMaterial.VALUETYPE_VEC4,
+			value = {0,1,0,0},
+		},		
+		{
+			sName = "g_vAmbLightColor",
+			type = MOAIMaterial.VALUETYPE_VEC3,
+			value = {0.85, 0.85, 0.85},
+		},		
+    },
+
+	tDynamicShaderValues = {
+		{
+			sName = "g_vCameraView",
+			type = MOAIMaterial.DYNAMICVALUE_CAMERA_VIEW,
+		},
+	},
+    
+	tShaderPermutation = {
+		tFlags = { "g_bGradientLighting" },
+	},
+}

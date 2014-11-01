@@ -1,0 +1,422 @@
+local Gui = require('UI.Gui')
+
+local nStatLabelMargin, nStatTextMargin  = 35, 65
+
+local nInspectorWidth = 418
+
+local nIndentX = 30
+local nHeadingHeight = 34
+local nIconOffsetY = -4
+local nSameLineTextOffsetY = -6
+
+local nSelfEsteemY = 10
+local nRoomSatisfactionY = -30
+local nJobSatisfactionY = -70
+local nPersonalityY = -110
+local nGraphY = -205
+local nGraphLabelWidth = 85
+local nGraphLabelY = -630
+
+return
+{
+    posInfo =
+	{
+        alignX = 'left',
+        alignY = 'top',
+        offsetX = 0,
+        offsetY = -24,
+    },
+    tExtraInfo =
+    {
+        tHostileMode =
+        {
+            { key = 'PersonalityIcon', hidden = true, },
+            { key = 'PersonalityLabel', hidden = true, },
+            { key = 'PersonalityText', hidden = true, },
+            { key = 'SelfEsteemIcon', hidden = true, },
+            { key = 'SelfEsteemLabel', hidden = true, },
+            { key = 'SelfEsteemText', hidden = true, },
+            { key = 'RoomSatisfactionIcon', hidden = true, },
+            { key = 'RoomSatisfactionLabel', hidden = true, },
+            { key = 'RoomSatisfactionText', hidden = true, },
+            { key = 'JobSatisfactionIcon', hidden = true, },
+            { key = 'JobSatisfactionLabel', hidden = true, },
+            { key = 'JobSatisfactionText', hidden = true, },
+        },
+        tCitizenMode =
+        {
+            { key = 'PersonalityIcon', hidden = false, },
+            { key = 'PersonalityLabel', hidden = false, },
+            { key = 'PersonalityText', hidden = false, },
+            { key = 'SelfEsteemIcon', hidden = false, },
+            { key = 'SelfEsteemLabel', hidden = false, },
+            { key = 'SelfEsteemText', hidden = false, },
+            { key = 'RoomSatisfactionIcon', hidden = false, },
+            { key = 'RoomSatisfactionLabel', hidden = false, },
+            { key = 'RoomSatisfactionText', hidden = false, },
+            { key = 'JobSatisfactionIcon', hidden = false, },
+            { key = 'JobSatisfactionLabel', hidden = false, },
+            { key = 'JobSatisfactionText', hidden = false, },
+
+        },
+        tCallbacks =
+        {
+            onSelected =
+            {
+                { key = 'PersonalityIcon', hidden = false, },
+                { key = 'PersonalityLabel', hidden = false, },
+                { key = 'PersonalityText', hidden = false, },
+				{ key = 'SelfEsteemIcon', hidden = false, },
+				{ key = 'SelfEsteemLabel', hidden = false, },
+				{ key = 'SelfEsteemText', hidden = false, },
+				{ key = 'RoomSatisfactionIcon', hidden = false, },
+				{ key = 'RoomSatisfactionLabel', hidden = false, },
+				{ key = 'RoomSatisfactionText', hidden = false, },
+				{ key = 'JobSatisfactionIcon', hidden = false, },
+				{ key = 'JobSatisfactionLabel', hidden = false, },
+				{ key = 'JobSatisfactionText', hidden = false, },
+            },
+            onDeselected =
+            {
+                { key = 'PersonalityIcon', hidden = true, },
+                { key = 'PersonalityLabel', hidden = true, },
+                { key = 'PersonalityText', hidden = true, },
+				{ key = 'SelfEsteemIcon', hidden = true, },
+				{ key = 'SelfEsteemLabel', hidden = true, },
+				{ key = 'SelfEsteemText', hidden = true, },
+				{ key = 'RoomSatisfactionIcon', hidden = true, },
+				{ key = 'RoomSatisfactionLabel', hidden = true, },
+				{ key = 'RoomSatisfactionText', hidden = true, },
+				{ key = 'JobSatisfactionIcon', hidden = true, },
+				{ key = 'JobSatisfactionLabel', hidden = true, },
+				{ key = 'JobSatisfactionText', hidden = true, },
+            },
+        },
+    },
+    tElements =
+    {
+		-- alternating tinted backgrounds for every other item
+        {
+            key = 'RoomSatBG',
+            type = 'onePixel',
+            pos = { 0, nRoomSatisfactionY },
+            scale = { nInspectorWidth, nHeadingHeight + 4 },
+            color = Gui.AMBER_OPAQUE_DIM,
+        },
+        {
+            key = 'NeedsBG',
+            type = 'onePixel',
+            pos = { 0, nPersonalityY },
+            scale = { nInspectorWidth, nHeadingHeight*2.75 },
+            color = Gui.AMBER_OPAQUE_DIM,
+        },
+        {
+            key = 'GraphLabelBG',
+            type = 'onePixel',
+            pos = { nInspectorWidth-nGraphLabelWidth+10, nGraphY-nHeadingHeight-2 },
+            scale = { nGraphLabelWidth-10, nInspectorWidth-25 },
+            color = Gui.AMBER_OPAQUE_DIM,
+        },
+		-- self esteem
+		{
+            key = 'SelfEsteemIcon',
+            type = 'uiTexture',
+            textureName = 'ui_icon_self_esteem',
+            sSpritesheetPath = 'UI/Inspector',
+            pos = { nStatLabelMargin - nIndentX, nSelfEsteemY + nIconOffsetY },
+            color = Gui.AMBER,
+        },
+		{
+            key = 'SelfEsteemLabel',
+            type = 'textBox',
+            pos = { nStatLabelMargin, nSelfEsteemY },
+            linecode = "INSPEC125TEXT",
+            style = 'dosissemibold26',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER,
+        },
+        {
+            key = 'SelfEsteemText',
+            type = 'textBox',
+            pos = { nStatTextMargin + 112, nSelfEsteemY + nSameLineTextOffsetY },
+            text = "YAaaaayy",
+            style = 'dosissemibold20',
+            rect = { 0, 300, 600, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER,
+        },
+		-- room satisfaction
+		{
+            key = 'RoomSatisfactionIcon',
+            type = 'uiTexture',
+            textureName = 'ui_icon_room_satisfaction',
+            sSpritesheetPath = 'UI/Inspector',
+            pos = { nStatLabelMargin - nIndentX, nRoomSatisfactionY + nIconOffsetY },
+            color = Gui.AMBER,
+        },
+		{
+            key = 'RoomSatisfactionLabel',
+            type = 'textBox',
+            pos = { nStatLabelMargin, nRoomSatisfactionY },
+            linecode = "INSPEC126TEXT",
+            style = 'dosissemibold26',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER,
+        },
+        {
+            key = 'RoomSatisfactionText',
+            type = 'textBox',
+            pos = { nStatTextMargin + 246, nRoomSatisfactionY + nSameLineTextOffsetY },
+            text = "WOOOoooo",
+            style = 'dosissemibold20',
+            rect = { 0, 300, 600, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER,
+        },
+		-- job satisfaction
+		{
+            key = 'JobSatisfactionIcon',
+            type = 'uiTexture',
+            textureName = 'ui_icon_room_satisfaction',
+            sSpritesheetPath = 'UI/Inspector',
+            pos = { nStatLabelMargin - nIndentX, nJobSatisfactionY + nIconOffsetY },
+            color = Gui.AMBER,
+        },
+		{
+            key = 'JobSatisfactionLabel',
+            type = 'textBox',
+            pos = { nStatLabelMargin, nJobSatisfactionY },
+            linecode = "INSPEC158TEXT",
+            style = 'dosissemibold26',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER,
+        },
+        {
+            key = 'JobSatisfactionText',
+            type = 'textBox',
+            pos = { nStatTextMargin + 155, nJobSatisfactionY + nSameLineTextOffsetY },
+            text = "WOOOoooo",
+            style = 'dosissemibold20',
+            rect = { 0, 300, 600, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER,
+        },
+        -- personality
+        {
+            key = 'PersonalityIcon',
+            type = 'uiTexture',
+            textureName = 'ui_icon_psych',
+            sSpritesheetPath = 'UI/Inspector',
+            pos = { nStatLabelMargin - nIndentX, nPersonalityY + nIconOffsetY },
+            color = Gui.AMBER,
+        },
+		{
+            key = 'PersonalityLabel',
+            type = 'textBox',
+            pos = { nStatLabelMargin, nPersonalityY },
+            linecode = "INSPEC076TEXT",
+            style = 'dosissemibold26',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER,
+        },
+        {
+            key = 'PersonalityText',
+            type = 'textBox',
+            text = "This is a test\nThis will work?\nYep It does\nOne more line",
+            style = 'dosissemibold20',
+            rect = { 0, 300, 360, 0 },
+            pos = { nStatLabelMargin + 30, nPersonalityY - nHeadingHeight },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER,
+        },
+		--
+		-- needs and morale graph
+		--
+        {
+            key = 'GraphIcon',
+            type = 'uiTexture',
+            textureName = 'ui_icon_needs',
+            sSpritesheetPath = 'UI/Inspector',
+            pos = { nStatLabelMargin - nIndentX, nGraphY + nIconOffsetY },
+            color = Gui.AMBER,
+        },
+		{
+            key = 'GraphHeadLabel',
+            type = 'textBox',
+            pos = { nStatLabelMargin, nGraphY },
+            linecode = "INSPEC173TEXT",
+            style = 'dosissemibold26',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER,
+        },
+		-- labels to mark top and bottom of graph
+		{
+            key = 'GraphTopLabel',
+            type = 'textBox',
+            pos = { 0, nGraphY-30 },
+			text = 'SATISFIED',
+            style = 'dosissemibold48',
+            rect = { 0, 300, nInspectorWidth - 80, 0 },
+            hAlign = MOAITextBox.CENTER_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER_OPAQUE,
+        },
+		{
+            key = 'GraphBottomLabel',
+            type = 'textBox',
+            pos = { 0, nGraphLabelY+60 },
+			text = 'UNSATISFIED',
+            style = 'dosissemibold48',
+            rect = { 0, 300, nInspectorWidth - 80, 0 },
+            hAlign = MOAITextBox.CENTER_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER_OPAQUE,
+        },
+--[[
+		{
+            key = 'GraphTopIcon',
+            type = 'uiTexture',
+            textureName = 'ui_dialogicon_bigsmile',
+            sSpritesheetPath = 'UI/Emoticons',
+            pos = { 418*0.65, nGraphY - 40 },
+			scale = { 1.5, 1.5 },
+            color = Gui.AMBER_OPAQUE,
+        },
+		{
+            key = 'GraphBottomIcon',
+            type = 'uiTexture',
+            textureName = 'ui_dialogicon_bigfrown',
+            sSpritesheetPath = 'UI/Emoticons',
+            pos = { 418*0.7, nGraphLabelY + 45 },
+			scale = { 1.5, 1.5 },
+            color = Gui.AMBER_OPAQUE,
+        },
+]]--
+		-- floating labels for each line
+		{
+            key = 'GraphLabelMorale',
+            type = 'textBox',
+            pos = { -nGraphLabelWidth, nGraphY - 25 },
+			text = 'Morale',
+            style = 'dosissemibold22',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.WHITE,
+        },
+		{
+            key = 'GraphLabelDuty',
+            type = 'textBox',
+            pos = { -nGraphLabelWidth, nGraphY },
+			text = 'Duty',
+            style = 'dosissemibold22',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.WHITE,
+        },
+		{
+            key = 'GraphLabelEnergy',
+            type = 'textBox',
+            pos = { -nGraphLabelWidth, nGraphY + 25 },
+			text = 'Energy',
+            style = 'dosissemibold22',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.WHITE,
+        },
+		{
+            key = 'GraphLabelSocial',
+            type = 'textBox',
+            pos = { -nGraphLabelWidth, nGraphY + 50 },
+			text = 'Social',
+            style = 'dosissemibold22',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.WHITE,
+        },
+		{
+            key = 'GraphLabelAmusement',
+            type = 'textBox',
+            pos = { -nGraphLabelWidth, nGraphY + 75 },
+			text = 'Fun',
+            style = 'dosissemibold22',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.WHITE,
+        },
+		{
+            key = 'GraphLabelHunger',
+            type = 'textBox',
+            pos = { -nGraphLabelWidth, nGraphY + 100 },
+			text = 'Hunger',
+            style = 'dosissemibold22',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.WHITE,
+        },
+		{
+            key = 'GraphLabelStuff',
+            type = 'textBox',
+            pos = { -nGraphLabelWidth, nGraphY + 125 },
+			text = 'Stuff',
+            style = 'dosissemibold22',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.WHITE,
+        },
+		-- x axis labels
+		{
+            key = 'GraphLabelX1',
+            type = 'textBox',
+            pos = { 322, nGraphLabelY },
+			text = '-0h',
+            style = 'dosissemibold22',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER,
+        },
+		{
+            key = 'GraphLabelX2',
+            type = 'textBox',
+            pos = { 162, nGraphLabelY },
+			text = '-8h',
+            style = 'dosissemibold22',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER,
+        },
+		{
+            key = 'GraphLabelX3',
+            type = 'textBox',
+            pos = { 0, nGraphLabelY },
+			text = '-16h',
+            style = 'dosissemibold22',
+            rect = { 0, 300, 500, 0 },
+            hAlign = MOAITextBox.LEFT_JUSTIFY,
+            vAlign = MOAITextBox.LEFT_JUSTIFY,
+            color = Gui.AMBER,
+        },
+    },
+}

@@ -1,0 +1,22 @@
+return {
+
+    -- ONLY Materials in the selector will get the modifier
+    bExcludingSelector = false,
+    tMaterialSelector = { "Materials/MeshDefault", },
+    
+    tColor = { 
+    
+        tValue = { 0,0,1,1 },
+        
+        fadeIn = 0.15,
+        fadeOut = 0.15,
+        
+        animMode = MOAIMaterial.ANIMMODE_FLICKER,
+        animRate = 5.0,
+        animScale = 1.0,
+    },
+    
+    tPermutationFlags = {
+        ["g_bSkinned"] = false,
+    },
+}

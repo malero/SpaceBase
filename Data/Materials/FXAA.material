@@ -1,0 +1,14 @@
+return {
+
+	sShader = "Shaders/fxaa.shd",
+	
+	tShaderValues = {
+		{
+			sName = "g_vTexCoordOffset",
+			type = MOAIMaterial.VALUETYPE_VEC2,
+			value = {.001, .001},
+		},
+		
+    },
+
+}   

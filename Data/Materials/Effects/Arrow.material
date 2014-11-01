@@ -1,0 +1,5 @@
+return {
+
+	sParentMaterial = "Materials/Effects/ParticleBase.material",
+	sTexture = "Effects/Textures/Arrow",
+}

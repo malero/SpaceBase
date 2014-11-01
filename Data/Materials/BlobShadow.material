@@ -1,0 +1,6 @@
+return {
+
+    sShader = "Shaders/shadow.shd",
+    
+    sTexture = "blob",
+}

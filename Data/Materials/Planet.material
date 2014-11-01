@@ -1,0 +1,75 @@
+return {
+
+	sShader = "Shaders/planet.shd",
+
+	tShaderValues = {
+		{
+			sName = "g_samBase", 
+			type = MOAIMaterial.VALUETYPE_TEXTURE,
+			value = "White"
+		},
+		{
+			sName = "g_samTop", 
+			type = MOAIMaterial.VALUETYPE_TEXTURE,
+			value = "Props/Space/Planet/Textures/city"
+		},
+		{
+			sName = "g_samBottom",
+			type = MOAIMaterial.VALUETYPE_TEXTURE,
+			value = "White",
+		},
+		{
+			sName = "g_samWaterNormal", 
+			type = MOAIMaterial.VALUETYPE_TEXTURE,
+			value = "Props/Space/Planet/Textures/OceanWaves_Norm"
+		},				
+		{
+			sName = "g_vHighlightColor",
+			type = MOAIMaterial.VALUETYPE_VEC4,
+			value = {0,1,0,0},
+		},
+		{
+			sName = "g_vRimLightColor",
+			type = MOAIMaterial.VALUETYPE_VEC3,
+			value = {0.2, 0.27, 0.7},
+		},						
+		{
+			sName = "g_vAmbLightColor",
+			type = MOAIMaterial.VALUETYPE_VEC3,
+			value = {0.85, 0.85, 0.85},
+		},
+		{
+			sName = "g_fTime",
+			type = MOAIMaterial.VALUETYPE_FLOAT,
+			value = 0,
+		},
+		{
+			sName = "g_vWaterColor",
+			type = MOAIMaterial.VALUETYPE_VEC3,
+		},		
+		{
+			sName = "g_vDryLandColor",
+			type = MOAIMaterial.VALUETYPE_VEC3,
+		},
+		{
+			sName = "g_vWetLandColor",
+			type = MOAIMaterial.VALUETYPE_VEC3,
+		},
+		{
+			sName = "g_vCloudColor",
+			type = MOAIMaterial.VALUETYPE_VEC4,
+		},		
+		{
+			sName = "g_vLandParams",
+			type = MOAIMaterial.VALUETYPE_VEC4,
+		},								
+    },
+    
+	tDynamicShaderValues = {
+		{
+			sName = "g_vCameraView",
+			type = MOAIMaterial.DYNAMICVALUE_CAMERA_VIEW,
+		},
+	},
+
+}

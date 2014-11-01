@@ -1,0 +1,22 @@
+{
+    "body": [
+        {
+            "text": "Thank you for playing Spacebase DF-9 1.0!",
+            "y": 70
+        },
+        {
+            "text": "This final major release adds Tutorial Mode, the Goals screen, many enhancements and fixes.  See the Spacebase website for the full list of changes.  As with our alpha releases, any further issues will be resolved in minor updates within the next few days.",
+            "y": -50
+        },
+        {
+            "text": "",
+            "y": -240
+        }
+    ],
+    "footer": {
+        "text": ">> Spacebase DF-9 Forums",
+        "url": "http://www.doublefine.com/forums/viewcategory/55/",
+        "y": -370,
+        "w": 360
+    }
+}

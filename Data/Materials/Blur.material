@@ -1,0 +1,15 @@
+return {
+
+	sShader = "Shaders/blur.shd",
+	
+	tShaderValues = {
+		{
+			sName = "g_fBlurWidth",
+			type = MOAIMaterial.VALUETYPE_FLOAT,
+			value = .1,
+		},
+    },
+    
+    tDynamicShaderValues = {
+    },
+}  
