@@ -11,7 +11,7 @@ local nDoneLabelStartY = -10
 local nHotkeyX, nHotkeyStartY = nButtonWidth - 112, -180
 local nDoneHotkeyY = -46
 local nIconScale = .6
-local numButtons = 8
+local numButtons = 9
 local nBGWidth = 160
 
 return
@@ -177,6 +177,17 @@ return
             },
             buttonName='SidebarButton',
             pos = { 0, nButtonStartY-nButtonHeight*7 },
+        },
+		{
+            key = 'ImmigrationShipButton',
+            type = 'templateButton',
+            layoutFile = 'UILayouts/SidebarButtonLayout',
+            replacements = {
+                SidebarLabel={linecode='HUDHUD063TEXT', pos={nLabelNoIconX, nLabelButtonStartY}},
+                SidebarIcon={hidden=true, },
+            },
+            buttonName='SidebarButton',
+            pos = { 0, nButtonStartY-nButtonHeight*8 },
         },
         {
             key = 'SidebarBottomEndcapExpanded',

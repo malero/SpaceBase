@@ -451,6 +451,7 @@ return {
     HUDHUD060TEXT = { sLine = "Hostile Derelict", },
     HUDHUD061TEXT = { sLine = "Hostile Dock", },
     HUDHUD062TEXT = { sLine = "Disasters", },
+	HUDHUD063TEXT = { sLine = "Immigration", },
     INSPEC001TEXT = { sLine = "Click on objects for more info.", },
     INSPEC002TEXT = { sLine = "CITIZEN", },
     INSPEC003TEXT = { sLine = "MORALE", },

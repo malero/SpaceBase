@@ -451,6 +451,7 @@ return {
     HUDHUD060TEXT = "Hostile Derelict",
     HUDHUD061TEXT = "Hostile Dock",
     HUDHUD062TEXT = "Disasters",
+	HUDHUD063TEXT = "Immigration",
     INSPEC001TEXT = "Click on objects for more info.",
     INSPEC002TEXT = "CITIZEN",
     INSPEC003TEXT = "MORALE",

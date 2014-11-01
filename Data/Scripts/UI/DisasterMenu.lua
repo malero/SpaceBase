@@ -35,6 +35,7 @@ function m.create()
         self.rParasiteButton = self:getTemplateElement('ParasiteButton')
         self.rDerelictButton = self:getTemplateElement('DerelictButton')
         self.rDockButton = self:getTemplateElement('DockButton')
+		self.rImmigrationShipButton = self:getTemplateElement('ImmigrationShipButton')
 
         self.rDoneButton:addPressedCallback(self.onDoneButtonPressed, self)
         self.rFireButton:addPressedCallback(self.onFireButtonPressed, self)
@@ -45,6 +46,7 @@ function m.create()
         self.rParasiteButton:addPressedCallback(self.onParasiteButtonPressed, self)
         self.rDerelictButton:addPressedCallback(self.onDerelictButtonPressed, self)
         self.rDockButton:addPressedCallback(self.onDockButtonPressed, self)
+		self.rImmigrationShipButton:addPressedCallback(self.onImmigrationShipButtonPressed, self)
         
         self.tHotkeyButtons = {}
         self:addHotkey(self:getTemplateElement('DoneHotkey').sText, self.rDoneButton)
@@ -168,6 +170,12 @@ function m.create()
     function Ob:onDockButtonPressed(rButton, eventType)
         if eventType == DFInput.TOUCH_UP then
             EventController.DBG_forceQueue('hostileDockingEvents', false, nDisasterDelay)
+        end
+    end
+
+	function Ob:onImmigrationShipButtonPressed(rButton, eventType)
+        if eventType == DFInput.TOUCH_UP then
+            EventController.DBG_forceQueue('immigrationEvents', false, nDisasterDelay)
         end
     end
     
