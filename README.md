@@ -19,6 +19,7 @@ Some of these may seem too drastic, but I tried to balance the game for about 50
 4. Decreased the amount of oxygen citizens breathe/sec (In large bases even if you had 100+ capacity, sometimes even 30 people could use enough oxygen to reduce rooms to a level where they would start to panic)
 5. Reduced the oxygen threshold in which citizens panic and stop doing everything.
 6. All corpses will be converted into body bags after you resume a game(sometimes they would bug out)
+7. I'm still trying to wrap my head around the Task/Needs/Malady system, but I've made a few changes in an effort to get people to work more. I reduced the decay of all needs except their job/"Duty" and "Stuff"(Stuff works a little differently). It seems to have worked, but it is most likely because they're just a little happier overall.
 
 **NEW RESEARCH PROJECTS**
 
@@ -54,7 +55,7 @@ You can build a terminal that will attempt to bring in new citizens. It costs 2,
 **NEW CONSTRUCTION ITEMS**
 
 1. The terminal for the human resources research project
-2. Killbot Controller - Allows you to make a Killbot for 5,000 matter(They can only be assign to security. Added robot themed 30+ first/last names)
+2. Killbot Controller - Allows you to make a Killbot for 5,000 matter(They can only be assigned to security. Added robot themed 30+ first/last names & Killbot space travel)
 
 
 
