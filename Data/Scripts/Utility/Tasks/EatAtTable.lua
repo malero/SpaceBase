@@ -1,5 +1,6 @@
 local Task=require('Utility.Task')
 local World=require('World')
+local GameRules=require('GameRules')
 local Class=require('Class')
 local Room=require('Room')
 local Log=require('Log')
@@ -104,6 +105,27 @@ function EatAtTable:onComplete(bSuccess)
 end
 
 function EatAtTable:onUpdate(dt)
+	if not self.lastWaitingForFoodTick or not self.lastWaitingForFoodTickTimer then
+	    self.lastWaitingForFoodTick = GameRules.elapsedTime
+		self.lastWaitingForFoodTickTimer = 1
+	    dt = 1
+	else
+	    dt = GameRules.elapsedTime - self.lastWaitingForFoodTick
+		self.lastWaitingForFoodTickTimer = self.lastWaitingForFoodTickTimer + dt
+	    self.lastWaitingForFoodTick = GameRules.elapsedTime
+	end
+
+	if self.lastWaitingForFoodTickTimer > 30 then
+		Print(TT_Warning, 'Nothing Served')
+		-- Sometimes work needs to be done before you can eat
+		-- Man up!
+		-- This is an awful hack, but everyone dies
+		-- if the work isn't being done
+		self.rChar:incrementNeedValue('Duty', -10)
+		self.rChar:incrementNeedValue('Hunger', 10)
+		self:interrupt('nothing served')
+	end
+	
     if self:interacting() then
         if self:tickInteraction(dt) then
             if self.bWaitingForFood then

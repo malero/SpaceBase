@@ -9,7 +9,7 @@ return
         alignX = 'left',
         alignY = 'top',
         offsetX = 0,
-        offsetY = 20,
+        offsetY = 40,
     },
     tExtraInfo =
     {

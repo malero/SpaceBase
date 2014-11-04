@@ -2,6 +2,7 @@ local Class=require('Class')
 local DFGraphics = require('DFCommon.Graphics')
 local World=require('World')
 local Base=require('Base')
+local ResearchData = require('ResearchData')
 local Renderer=require('Renderer')
 local Zone= require('Zones.Zone')
 local GameRules=require('GameRules')
@@ -546,6 +547,7 @@ function Room.onTick( dt )
     local tRooms = Room.getRoomsOfTeam(Character.TEAM_ID_PLAYER)
     for rRoom,_ in pairs(tRooms) do
         Room.nNumOwnedTiles = Room.nNumOwnedTiles + rRoom.nTiles
+		rRoom:tickLockdownAlarm()
     end
 
     local bUpdate = false
@@ -1096,6 +1098,7 @@ end
 function Room:_updateSound(bShuttingDown)
     local sCue = nil
     if bShuttingDown then
+	elseif self.bUserBlockLockdownAlarm then sCue = 'room_alert'
     elseif self.bEmergencyAlarmEnabled then sCue = 'room_alert'
     elseif self.nFireTiles > 0 then sCue = 'room_fire'
     elseif self.bBreach then sCue = 'room_breach'
@@ -1239,13 +1242,148 @@ function Room:setLockdown(bLockdown)
     end
 end
 
+-- Lockdown Alarm
+function Room:isLockedDownAlarmOn()
+    return self.bUserBlockLockdownAlarm
+end
+
+function Room:toggleLockdownAlarm()
+    self:setLockdownAlarm(not self.bUserBlockLockdownAlarm)
+end
+
+function Room:setLockdownAlarm(bLockdownAlarm)
+    self.bUserBlockLockdownAlarm = bLockdownAlarm
+	if self.bUserBlockLockdownAlarm then
+		self:setLightingScheme(Room.LIGHTING_SCHEME_DIM)
+		self:tickLockdownAlarm()
+	else
+		self:setLightingScheme(Room.LIGHTING_SCHEME_NORMAL)
+		self:setLockdown(false)
+		for rProp,_ in pairs(self.tProps) do
+			if rProp and rProp.bActive == false then
+				rProp.bActive = true
+			end
+		end
+	end
+	self:_updateSound(false)
+end
+
+function Room:tickLockdownAlarm()
+	local dt
+    if not self.lastLockdownAlarmTick or not self.lockdownAlarmTickTimer then
+        self.lastLockdownAlarmTick = GameRules.elapsedTime
+		self.lockdownAlarmTickTimer = 1
+        dt = 1
+    else
+        dt = GameRules.elapsedTime - self.lastLockdownAlarmTick
+		self.lockdownAlarmTickTimer = self.lockdownAlarmTickTimer + dt
+        self.lastLockdownAlarmTick = GameRules.elapsedTime
+    end
+
+	if self.lockdownAlarmTickTimer < 0.5 then
+		return
+	else
+		self.lockdownAlarmTickTimer = 0
+	end
+	
+	if self:isLockedDownAlarmOn() then
+		self:setLightingScheme(Room.LIGHTING_SCHEME_DIM)
+		local nFriendlyChars = 0
+		local nHostileChars = 0
+		local tChars, nChars = self:getCharactersInRoom(true)
+		if nChars > 0 then
+			local tRooms, nNumRooms, nOtherTeamRooms = Room.getSafeRoomsOfTeam(Character.TEAM_ID_PLAYER)
+			tRooms[self] = nil
+			local bestRoom = MiscUtil.randomKey(tRooms)
+			if bestRoom then
+				local bestRoomLocationX,bestRoomLocationY,bestRoomLocationLevel = bestRoom:randomLocInRoom(false,true,true)
+				for rChar,_ in pairs(tChars) do
+					if rChar:getTeam() == Character.TEAM_ID_PLAYER then
+						nFriendlyChars = nFriendlyChars + 1
+						if rChar:getActivityText() ~= 'Fleeing' and bestRoom and bestRoomLocationX and bestRoomLocationY and not rChar:wearingSpacesuit() then
+							rChar:forceActivity('FleeEmergencyAlarm', 'Utility.Tasks.RunTo', {bInfinite=true, pathX=bestRoomLocationX,pathY=bestRoomLocationY,bRun=true, nPriorityOverride=100})
+						end
+					end
+					if rChar:getTeam() ~= Character.TEAM_ID_PLAYER then
+						nHostileChars = nHostileChars + 1
+						local nPoisonDamage = 0
+						local nConvertChance = 0
+						local bConverted = false
+						if Base.hasCompletedResearch('LockdownLevel4') then
+							nPoisonDamage = ResearchData['LockdownLevel4'].nPoisonDamage
+							nConvertChance = ResearchData['LockdownLevel4'].nConvertChance
+						elseif Base.hasCompletedResearch('LockdownLevel3') then
+							nPoisonDamage = ResearchData['LockdownLevel3'].nPoisonDamage
+							nConvertChance = ResearchData['LockdownLevel3'].nConvertChance
+						elseif Base.hasCompletedResearch('LockdownLevel2') then
+							nPoisonDamage = ResearchData['LockdownLevel2'].nPoisonDamage
+						end
+						
+						bConverted = math.random() < nConvertChance
+						
+						if bConverted then
+							if Base.hasCompletedResearch('LockdownLevel4') and rChar.tStats.nRace == Character.RACE_KILLBOT then
+								rChar:_convert()
+							elseif rChar.tStats.nRace ~= Character.RACE_KILLBOT then
+								rChar:_convert()
+							else
+								bConverted = false
+							end
+						end
+						
+						if bConverted then
+							Print(TT_Warning, rChar.getNiceName, ' was converted')
+						end
+						
+						if nPoisonDamage > 0 and not bConverted then
+							local tPoisonDamage = {
+								nDamage = nPoisonDamage,
+								nAttackType = Character.ATTACK_TYPE.Ranged,
+								nDamageType = Character.DAMAGE_TYPE.Acid,
+							}
+							rChar:takeDamage(nil, tPoisonDamage)
+							Print(TT_Warning, rChar.getNiceName, ' took ', nPoisonDamage, ' poison damage and now has ', rChar.tStatus.nHitPoints, ' hit points.')
+						end
+						
+					end
+				end
+			end
+		end
+		
+		if nFriendlyChars < 1 then
+			self.tLockdownChars = nil
+			self:setLockdown(true)
+			for rProp,_ in pairs(self.tProps) do
+				if rProp and rProp.bActive then
+					rProp.bActive = false
+				end
+			end
+		end
+		if Base.hasCompletedResearch('LockdownLevel5') and nHostileChars < 1 then
+			self:setLockdownAlarm(false)
+			Print(TT_Warning, 'Automatically turning off lockdown')
+		end
+	else
+		if Base.hasCompletedResearch('LockdownLevel5') and self.nTeam == Character.TEAM_ID_PLAYER then
+			local tChars, nChars = self:getCharactersInRoom(true)
+			for rChar,_ in pairs(tChars) do
+				if rChar:getTeam() ~= Character.TEAM_ID_PLAYER then
+					Print(TT_Warning, 'Automatically turning on lockdown')
+					self:setLockdownAlarm(true)
+					break
+				end
+			end
+		end
+	end
+end
+
 function Room:playerOwned()
     return self.nTeam == Character.TEAM_ID_PLAYER
 end
 
 -- rChar is optional.
 function Room:isDangerous(rChar)
-    if self.bEmergencyAlarmEnabled then
+    if self.bEmergencyAlarmEnabled or self.bUserBlockLockdownAlarm then
         return true
     end
 
@@ -1743,6 +1881,19 @@ function Room:tickPower()
 	self.nPowerDraw = nTotalPowerDraw
 end
 
+function Room:tickCreateBodyBags()
+	-- Seems like the game doesn't create body bags efficiently
+	-- In long games, bodies can add up and make rendering the game very slow
+	local tChars, nChars = self:getCharactersInRoom(true)
+	if nChars > 0 then
+		for rChar,_ in pairs(tChars) do
+			if rChar:isDead() then
+				rChar:createBodyBag()
+			end
+		end
+	end
+end
+
 function Room:clearPowerVisLines()
     if self.tPowerVisLines then
         local rLayer = Renderer.getRenderLayer(Room.POWER_DISPLAY_LAYER)
@@ -1787,6 +1938,7 @@ function Room:tickRoomSlow()
     self:tickDoors()
     self:tickOxygen()
 	self:tickPower()
+	--self:tickCreateBodyBags()
 end
 
 function Room:canProvidePower()
@@ -1815,7 +1967,6 @@ end
 
 function Room:tickRoomFast()
     Profile.enterScope("TickSingleRoom")
-
     local dt
     if not self.lastTickTime then
         self.lastTickTime = GameRules.elapsedTime

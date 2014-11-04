@@ -58,6 +58,25 @@ local tActionButtonData=
             return 'normal'
         end,
     },
+	-- room lockdown
+	{
+		sActiveLinecode="MALEROUI0001TEXT",
+        sInactiveLinecode="MALEROUI0002TEXT",
+		sLayoutFile = 'UILayouts/ActionButtonLayout',
+		sButtonName = 'ActionButton',
+		sLabelElement = 'ActionLabel',
+		isActiveFn=function(self)
+			return not self.rSelected:isLockedDownAlarmOn()
+		end,
+        buttonStatusFn = function(self)
+			local rRoom = self.rSelected
+			if rRoom:isLockedDownAlarmOn() then
+				return 'selected'
+			else
+            	return 'normal'
+			end
+        end,
+    },
 }
 
 function m.create()
@@ -81,8 +100,9 @@ function m.create()
         end
         self.tButtons[1]:addPressedCallback(self.claimButtonPressed, self)
         self.tButtons[2]:addPressedCallback(self.sealButtonPressed, self)
+		self.tButtons[3]:addPressedCallback(self.lockdownAlarmButtonPressed, self)
         self.nStartBedButtonX = x
-        self.nStartBedButtonY = y
+        self.nStartBedButtonY = y + 50
         self.tCitizenAssignmentButtons = {}
         self.tCitizenUnassignmentButtons = {}
 		self.rCustomControlsLabel = self:getTemplateElement('CustomControlsLabel')
@@ -206,6 +226,10 @@ function m.create()
 
 	function Ob:sealButtonPressed()
 		self.rZoneInspector.rRoom:toggleLockdown()
+	end
+	
+	function Ob:lockdownAlarmButtonPressed()
+		self.rZoneInspector.rRoom:toggleLockdownAlarm()
 	end
 	
 	function Ob:claimButtonPressed()

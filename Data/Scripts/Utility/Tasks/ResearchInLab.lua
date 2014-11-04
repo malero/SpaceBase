@@ -9,9 +9,9 @@ local Malady=require('Malady')
 
 local ResearchInLab = Class.create(Task)
 
-ResearchInLab.nSessionDuration = 20
-ResearchInLab.nMinAmountPerResearch = 5
-ResearchInLab.nMaxAmountPerResearch = 20
+ResearchInLab.nSessionDuration = 10
+ResearchInLab.nMinAmountPerResearch = 20
+ResearchInLab.nMaxAmountPerResearch = 60
 -- seconds
 ResearchInLab.nLogFrequency = 300
 -- science = expert labor!

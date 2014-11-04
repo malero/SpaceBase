@@ -174,13 +174,45 @@ function Character:init( tData )
 	self.bInitialized = true
 end
 
+function Character:forceActivity(sActivity, sClass, tData, sMalady)
+	self.nThreat = 100
+	self.sThreatSource='room'
+	
+	if self.rCurrentTask ~= nil then
+		self:_clearPendingTask()
+		self.rCurrentTask:interrupt("alarm")
+	end
+	
+    local rStubAO = g_ActivityOption.new(sActivity, tData)
+    local bSuccess, sReason = rStubAO:fillOutBlackboard(self)
+    if bSuccess then
+        local rClass = require(sClass)
+        self:forceTask(rClass.new(self, {}, rStubAO))
+	else
+		Print(TT_Warning, 'Not queuing ',sClass,' Reason:',sReason)
+	end
+	
+	if sMalady then
+		if self:diseaseInteraction(nil,Malady.createNewMaladyInstance(sMalady)) then
+	        if self:retrieveMemory(Character.MEMORY_TOOK_DAMAGE_RECENTLY) then
+	            -- log about being incapacitated :[
+	            Log.add(Log.tTypes.HEALTH_CITIZEN_INCAPACITATED_INJURY, self)
+	        end
+	    end
+	end
+end
+
 function Character:postLoad()
+	Print(TT_Warning, 'Post Load ', self:getNiceName())
     if self.tStatus.tAssignedToBrig then
         local rRoom = ObjectList.getObject(self.tStatus.tAssignedToBrig)
         if rRoom and rRoom:getZoneName() == 'BRIG' then
             rRoom:getZoneObj():charAssigned(self)
         end
     end
+	if self:isDead() then
+		self:createBodyBag(true, true)
+	end
 end
 
 ------------------------------------------------------------------
@@ -330,6 +362,31 @@ function Character:isDead()
 	return self.tStatus.health == Character.STATUS_DEAD
 end
 
+
+function Character:createBodyBag(force, destroy)
+	if (not self:isDead() or self.tStatus.bCreatedCorpse) and not force then
+		return
+	end
+	
+	self.tStatus.bCreatedCorpse = true
+    local nCorpseType = nil
+	if Base.isFriendlyToPlayer(self) then
+		nCorpseType = Corpse.TYPE_FRIENDLY
+	elseif self.tStats.nRace == Character.RACE_MONSTER or self.tStats.nRace == Character.RACE_KILLBOT then
+		nCorpseType = Corpse.TYPE_MONSTER
+	else
+		nCorpseType = Corpse.TYPE_RAIDER
+	end
+    local tCorpse = Inventory.createItem('Corpse', { tOccupant=self._ObjectList_ObjectMarker, sOccupantID=self:getUniqueID(), 
+                        sOccupantName=self:getNiceName(), nType=nCorpseType })
+    self.rCorpse = require('Pickups.Pickup').dropInventoryItemAt(tCorpse, self:getLoc())
+    self.tStatus.tCorpseProp = ObjectList.getTag(self.rCorpse)
+	
+	if destroy then
+		CharacterManager.deleteCharacter(self)
+	end
+end
+
 function Character:_remove()
 	assertdev(not self.bDestroyed)
     if self.bDestroyed then
@@ -443,19 +500,7 @@ function Character:_kill( callback, bStartDead, cause, tAdditionalInfo )
 	end
     -- spawn a pick-up-able corpse object, so doctors can inter our remains
     if cause ~= Character.CAUSE_OF_DEATH.SUCKED_INTO_SPACE and not self.tStatus.bCreatedCorpse then
-        self.tStatus.bCreatedCorpse = true
-        local nCorpseType = nil
-		if Base.isFriendlyToPlayer(self) then
-			nCorpseType = Corpse.TYPE_FRIENDLY
-		elseif self.tStats.nRace == Character.RACE_MONSTER or self.tStats.nRace == Character.RACE_KILLBOT then
-			nCorpseType = Corpse.TYPE_MONSTER
-		else
-			nCorpseType = Corpse.TYPE_RAIDER
-		end
-        local tCorpse = Inventory.createItem('Corpse', { tOccupant=self._ObjectList_ObjectMarker, sOccupantID=self:getUniqueID(), 
-                            sOccupantName=self:getNiceName(), nType=nCorpseType })
-        self.rCorpse = require('Pickups.Pickup').dropInventoryItemAt(tCorpse, self:getLoc())
-        self.tStatus.tCorpseProp = ObjectList.getTag(self.rCorpse)
+        self:createBodyBag()
     end
     local rCorpse = self.tStatus.tCorpseProp and ObjectList.getObject(self.tStatus.tCorpseProp)
     if rCorpse then rCorpse:hideBodybag() end
@@ -622,12 +667,21 @@ end
 
 function Character:setJob(job, bLoading)
     assertdev(Character.JOB_NAMES[job])
+	local bSetJobOutfit = true
+	-- Monsters and Killbots can only be security
+	if self.tStats.nRace == Character.RACE_KILLBOT or self.tStats.nRace == Character.RACE_MONSTER then
+		job = Character.EMERGENCY
+		bSetJobOutfit = false
+	end
+
     if not Character.JOB_NAMES[job] then
         job = Character.UNEMPLOYED
     end
 	self.tStats.nJob = job
-
-	self:_setJobOutfit( bLoading )
+	
+	if bSetJobOutfit then
+		self:_setJobOutfit( bLoading )
+	end
 	-- don't make a log entry if we're loading save data
 	if bLoading then
 		return
@@ -951,6 +1005,18 @@ end
 
 function Character:setNeedValue(needName, value)
 	self.tNeeds[needName] = value
+end
+
+function Character:incrementNeedValue(needName, value)
+	if self.tNeeds[needName] == nil then
+		self.tNeeds[needName] = 0
+	end
+	self.tNeeds[needName] = self.tNeeds[needName] + value
+	if self.tNeeds[needName] > 90 then
+		self.tNeeds[needName] = 90
+	elseif self.tNeeds[needName] < -90 then
+		self.tNeeds[needName] = -90
+	end
 end
 
 function Character:storeMemory(key, val, nDuration)
@@ -1753,16 +1819,29 @@ function Character:isElevated()
 end
 
 function Character:spacewalking()
-	return self.tStatus.bSpacewalking
+	if self.tStats.nRace == Character.RACE_KILLBOT and (self:getRoom() == Room.getSpaceRoom() or self:inSpace()) then
+		return true
+	else
+		return self.tStatus.bSpacewalking
+	end
 end
 
 function Character:wearingSpacesuit()
-	return self.rSpacesuitRig and self.rSpacesuitRig:isActive()
+	if self.tStats.nRace == Character.RACE_KILLBOT then
+		return true
+	else
+		return self.rSpacesuitRig and self.rSpacesuitRig:isActive()
+	end
 end
 
 function Character:inSpace()
-	local tileValue = World.getTileValueFromWorld(self:getLoc())
-	return tileValue == World.logicalTiles.SPACE
+	local rRoom = self:getRoom()
+	if self.tStats.nRace == Character.RACE_KILLBOT and rRoom and rRoom:isBreached() then
+		return true
+	else
+		local tileValue = World.getTileValueFromWorld(self:getLoc())
+		return tileValue == World.logicalTiles.SPACE
+	end
 end
 
 function Character:inVacuum()
@@ -2270,6 +2349,13 @@ function Character:updateAI(dt)
 				-- don't modify needs that are going to be modified by this activity
 			else
                 local nMod = tNeedsReduceMods[k] or 1
+				if self.tNeeds[k] <= 50 then
+					-- Cap all non duty reductions at 0.3
+					-- People need to stop F'n around and WORK IT!
+					if k ~= 'Duty' and nMod > 0.3 then
+						nMod = 0.3
+					end
+				end
 				self.tNeeds[k] = Needs.clamp(self.tNeeds[k] - 1*nMod)
 			end
 		end
@@ -4581,8 +4667,10 @@ function Character:getStuffSatisfaction(tOptionalNewObj,tOptionalOldObj)
         nTotal = nTotal + self:getObjectAffinity(tOptionalNewObj) * .1
     end
     nTotal = math.max(math.min(nTotal,10),1)
+
     -- log over the range 1-10, giving us a satisfaction 0-1
     nTotal = math.log10(nTotal)
+
     -- remap that to -100,100 to match our other satisfactions.
     nTotal = nTotal*200-100
     return nTotal
@@ -5131,7 +5219,8 @@ function Character:_updateGatherers()
         }
         self.tActivityOptionGatherers.CommandObject=
         {
-            gatherFn=CommandObject.getActivityOptions,
+            gatherFn=CommandObject.getActivityOptions,
+
         }
     elseif nBehavior == Character.FACTION_BEHAVIOR.EnemyGroup then
         self.tActivityOptionGatherers.RoomJobs=
@@ -6178,6 +6267,7 @@ end
 
 -- infects the character.
 function Character:diseaseInteraction(rSource,tMalady)
+	Print(TT_Warning, 'Malady?', tMalady.sMaladyName)
     -- no diseases for robots
 	if self.tStats.nRace == Character.RACE_KILLBOT then return false end
 

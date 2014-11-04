@@ -4,9 +4,9 @@ local nButtonWidth, nButtonHeight  = 418, 90
 local buttonX = 200
 
 local nLabelX = 8
-local nCustomControlLabelY = -120
+local nCustomControlLabelY = -170
 
-local nScrollAreaTopMargin = 210
+local nScrollAreaTopMargin = 260
 
 return
 {

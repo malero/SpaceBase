@@ -149,7 +149,7 @@ function m.create()
                 self:setTemplateUITexture('JobTexture', sTextureName, 'UI/JobRoster')
             end
             for rButton, eExistingJob in pairs(self.tJobButtons) do
-                rButton:setSelected(eExistingJob == eJob)
+				rButton:setSelected(eExistingJob == eJob)
             end
         end
     end

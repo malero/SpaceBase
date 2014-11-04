@@ -2548,4 +2548,8 @@ return {
     ZONEUI149TEXT = "Select Room to Assign",
     ZONEUI150TEXT = "Select Bed to Assign",
     ZONEUI151CITZ = "Select Brig to Assign",
+	MALEROUI0001TEXT = "Initiate Lockdown",
+	MALEROUI0002TEXT = "Stop Lockdown",
+	MALEROUI0003TEXT = "Build Killbot",
+	MALEROUI0004TEXT = "Send Transmission",
 }

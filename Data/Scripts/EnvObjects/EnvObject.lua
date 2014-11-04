@@ -28,8 +28,8 @@ local World = require('World')
 local EnvObject = Class.create(nil, MOAIProp.new)
 
 -- Decay per hour is set per-object in EnvObjectData.lua
-EnvObject.MIN_PCT_HEALED_PER_MAINTAIN = 2
-EnvObject.MAX_PCT_HEALED_PER_MAINTAIN = 20
+EnvObject.MIN_PCT_HEALED_PER_MAINTAIN = 20
+EnvObject.MAX_PCT_HEALED_PER_MAINTAIN = 60
 -- amount damaged on failure
 EnvObject.MAINTAIN_FAILURE_DAMAGE = 0
 EnvObject.PROBABILITY_FIRE_ON_DESTROY = 0
@@ -1372,6 +1372,23 @@ function EnvObject:maintain(conditionAtStartOfMaintain, nMaintainerCompetence)
     if Base.hasCompletedResearch('MaintenanceLevel2') then
         nConditionRaised = nConditionRaised * ResearchData['MaintenanceLevel2'].nConditionMultiplier
     end
+
+	local nChanceCriticallySucceed = 0
+
+	if Base.hasCompletedResearch('MaintenanceToolsLevel3') then
+		nChanceCriticallySucceed = ResearchData['MaintenanceToolsLevel3'].nCriticalChance
+	elseif Base.hasCompletedResearch('MaintenanceToolsLevel2') then
+		nChanceCriticallySucceed = ResearchData['MaintenanceToolsLevel2'].nCriticalChance
+	elseif Base.hasCompletedResearch('MaintenanceToolsLevel1') then
+		nChanceCriticallySucceed = ResearchData['MaintenanceToolsLevel1'].nCriticalChance
+	end
+	
+	local bCriticallySucceed = math.random() < nChanceCriticallySucceed
+	
+	if bCriticallySucceed then
+		nConditionRaised = nConditionRaised * 2
+		Print(TT_Warning, 'Critical Repair:', nConditionRaised)
+	end
     
     local newCondition = math.min(self.nCondition+nConditionRaised, 100)
     local nImprovement = newCondition - self.nCondition

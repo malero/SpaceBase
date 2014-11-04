@@ -24,8 +24,8 @@ HydroPlant.PLANT_HEALTH_NEEDED_TO_GROW = 65
 -- ratio * 100 / growth time to 100%
 -- TODO: move this into PlantData so some plants can be more/less hardy
 HydroPlant.AGE_TO_DECAY_RATIO = 0.4
-HydroPlant.MIN_HEALTH_PCT_HEALED_PER_MAINTAIN = 10
-HydroPlant.MAX_HEALTH_PCT_HEALED_PER_MAINTAIN = 40
+HydroPlant.MIN_HEALTH_PCT_HEALED_PER_MAINTAIN = 20
+HydroPlant.MAX_HEALTH_PCT_HEALED_PER_MAINTAIN = 60
 HydroPlant.DEFAULT_HEALTH = 100
 -- "sickly" = equivalent to envobject "damaged"
 HydroPlant.SICKLY_HEALTH = 50

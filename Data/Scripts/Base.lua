@@ -1,5 +1,6 @@
 local GameRules = require('GameRules')
 local Class = require('Class')
+local Profile = require('Profile')
 local Room = nil
 local ObjectList = require('ObjectList')
 local Character = require('CharacterConstants')
@@ -153,6 +154,14 @@ function Base._assign(rChar,rObj,tChar,tObj)
     if rChar then
         tChar[rChar.tag] = rObj and rObj.tag
     end
+end
+
+function Base.charHasBed(rChar)
+	return Base.tCharToBed[rChar.tag] ~= nil
+end
+
+function Base.bedHasChar(rBed)
+	return Base.tBedToChar[rBed.tag] ~= nil
 end
 
 function Base.fromSaveData(tSaveData)
@@ -476,6 +485,51 @@ end
 
 function Base.onTick(dt)
     if dt <= 0 then return end
+	
+	if not Base.lastHumanResourcesTick or not Base.humanResourcesTickTimer then
+        Base.lastHumanResourcesTick = GameRules.elapsedTime
+		Base.humanResourcesTickTimer = 1
+    else
+		Base.humanResourcesTickTimer = Base.humanResourcesTickTimer + dt
+        Base.lastHumanResourcesTick = GameRules.elapsedTime
+    end
+	
+	if Base.hasCompletedResearch('HumanResourcesLevel1') and Base.humanResourcesTickTimer >= 0.5 then
+		Base.humanResourcesTickTimer = 0
+		-- Find open beds
+		local tOpenBeds = {}
+		local tRooms, nNumRooms, nOtherTeamRooms = Room.getRoomsOfTeam(Character.TEAM_ID_PLAYER)
+		if tRooms then
+			for rRoom,i in pairs(tRooms) do
+		        local tBeds = rRoom:getPropsOfName('Bed')
+				if not tBeds then break end
+			    for rBed,_ in pairs(tBeds) do
+					if not Base.bedHasChar(rBed) then
+						table.insert(tOpenBeds, rBed)
+					end
+				end
+			end
+		end
+	
+		-- Asign characters to beds
+		if #tOpenBeds > 0 then
+			local tChars = CharacterManager.getOwnedCharacters()
+			if tChars then
+				for _,rChar in pairs(tChars) do
+					if rChar:getTeam() == Character.TEAM_ID_PLAYER and not Base.charHasBed(rChar) then
+						Print(TT_Warning, 'Number of open beds for:',rChar:getNiceName(),' is ',#tOpenBeds)
+						for idx,rBed in pairs(tOpenBeds) do
+							if not Base.bedHasChar(rBed) then
+								Base.assignBed(rChar,rBed)
+								tOpenBeds[idx] = nil
+								break
+							end
+						end
+					end
+				end
+			end
+		end
+	end
     
     if Base.retrieveMemory(Base.EVENTS.HostileInBase) == nil then
         local isHostile,rChar = Base.isHostileInBase()

@@ -238,6 +238,20 @@ function Task:_updateQueue()
 	end
 end
 
+function Task:forceTask(sClass,tData)
+	self:interrupt("forced")
+	tData.bInfinite = true
+	tData.nPriorityOverride = self.nPriority
+    local rStubAO = ActivityOption.new(self.activityName.."_"..sClass, tData)
+    local bSuccess, sReason = rStubAO:fillOutBlackboard(self.rChar)
+    if bSuccess then
+        local rClass = require(sClass)
+        self.rQueuedTask = rClass.new(self.rChar, {}, rStubAO)
+	else
+		Print(TT_Warning, 'Not queuing',sClass,' Reason:',sReason)
+	end
+end
+
 function Task:getLeafTask()
     local rQueuedTask = self
     while rQueuedTask do

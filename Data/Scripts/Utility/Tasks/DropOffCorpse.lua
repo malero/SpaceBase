@@ -5,6 +5,7 @@ local Class=require('Class')
 local Log=require('Log')
 local Character=require('CharacterConstants')
 local GameRules = require('GameRules')
+local Base = require('Base')
 local Corpse = require('Pickups.Corpse')
 
 local DropOffCorpse = Class.create(Task)
@@ -24,13 +25,14 @@ function DropOffCorpse:init(rChar,tPromisedNeeds,rActivityOption)
 end
 
 function DropOffCorpse:onUpdate(dt)
-    if self:interacting() then
-        if self:tickInteraction(dt) then
+    if self:interacting() or Base.hasCompletedResearch('PortableIncinerator') then
+        if self:tickInteraction(dt) or Base.hasCompletedResearch('PortableIncinerator') then
             local tItemData = self.rChar:destroyItem(self.sObjectKey)
             if not tItemData then
                 self:interrupt('item to incinerate is gone')
                 return
             elseif tItemData.sTemplate == 'Corpse' then
+				Print(TT_Warning, 'Corpse Begon')
                 self.rChar:alterMorale(Character.MORALE_MINE_ASTEROID, 'DroppedOffCorpse')
                 local tLogData = { sDeceased = tItemData.sOccupantName }
                 -- different logs for friendly, monster, raider

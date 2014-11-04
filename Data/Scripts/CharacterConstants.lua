@@ -263,7 +263,7 @@ CharacterConstants.STUFF_AFFINITY_DISCARD_THRESHOLD = -1
 CharacterConstants.MAX_OWNED_STUFF = 10
 CharacterConstants.SATISFACTION_UTILITY_SCALE = 1/10
 CharacterConstants.MAX_INVENTORY = 5
-CharacterConstants.STUFF_MIN_HOLD_TIME = 60*4
+CharacterConstants.STUFF_MIN_HOLD_TIME = 60
 
 -- default max hitpoints
 CharacterConstants.STARTING_HIT_POINTS = 100
@@ -371,7 +371,7 @@ CharacterConstants.ANGER_UI_TEXT =
 -- if needs are met but morale is negative, bump by this each tick
 CharacterConstants.MORALE_NEEDS_MET_BONUS = 0.5
 CharacterConstants.MORALE_LOW_OXYGEN = -0.1
-CharacterConstants.MORALE_LOW_OXYGEN_THRESHOLD = 550
+CharacterConstants.MORALE_LOW_OXYGEN_THRESHOLD = 250
 --
 -- morale events
 --
@@ -459,9 +459,9 @@ CharacterConstants.BACKGROUND_RENDER_LAYER = 'WorldOutlines'
 
 CharacterConstants.SIGHT_RADIUS = 18
 
-CharacterConstants.OXYGEN_PER_SECOND = 200
+CharacterConstants.OXYGEN_PER_SECOND = 50
 CharacterConstants.OXYGEN_LOW = 400
-CharacterConstants.OXYGEN_SUFFOCATING = 100
+CharacterConstants.OXYGEN_SUFFOCATING = 50
 CharacterConstants.OXYGEN_SUFFOCATION_UNTIL_DEATH = 60 -- in game seconds
 CharacterConstants.OXYGEN_AVERAGE_SAMPLE = 5
 -- max oxygen = seconds of life inside suit * o2/sec
@@ -2690,7 +2690,8 @@ CharacterConstants.HEAD_TYPE=
         tFaceTop = {
             CharacterConstants.FACE_TOP_CLEAR,
         }, 
-        tJobHelmets = {
+        tJobHelmets = {
+
             [CharacterConstants.BUILDER] = CharacterConstants.BUILDER_BASE_HELMET,
             [CharacterConstants.TECHNICIAN] = CharacterConstants.NO_HELMET,
             [CharacterConstants.EMERGENCY] = CharacterConstants.EMERGENCY_BASE_HELMET,

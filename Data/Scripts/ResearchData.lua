@@ -1,5 +1,133 @@
 local t=
 {
+	-- Malero Research Mods
+	LockdownLevel1=
+	{
+		sName='MALERORESRCH0001L1TEXT',
+        sDesc='MALERORESRCH0001L1DESC',
+		tPrereqs={},
+	    nResearchUnits=750,
+		sIcon = 'ui_jobs_iconJobResponse',
+	},
+	LockdownLevel2=
+	{
+		sName='MALERORESRCH0001L2TEXT',
+        sDesc='MALERORESRCH0001L2DESC',
+		tPrereqs={'LockdownLevel1'},
+	    nResearchUnits=1500,
+		nPoisonDamage=2,
+		sIcon = 'ui_jobs_iconJobResponse',
+	},
+	LockdownLevel3=
+	{
+		sName='MALERORESRCH0001L3TEXT',
+        sDesc='MALERORESRCH0001L3DESC',
+		tPrereqs={'LockdownLevel2'},
+	    nResearchUnits=2250,
+		nPoisonDamage=4,
+		nConvertChance=0.005,
+		sIcon = 'ui_jobs_iconJobResponse',
+	},
+	LockdownLevel4=
+	{
+		sName='MALERORESRCH0001L4TEXT',
+        sDesc='MALERORESRCH0001L4DESC',
+		tPrereqs={'LockdownLevel3'},
+	    nResearchUnits=3000,
+		nPoisonDamage=6,
+		nConvertChance=0.01,
+		sIcon = 'ui_jobs_iconJobResponse',
+	},
+	LockdownLevel5=
+	{
+		sName='MALERORESRCH0001L5TEXT',
+        sDesc='MALERORESRCH0001L5DESC',
+		tPrereqs={'LockdownLevel4'},
+	    nResearchUnits=3750,
+		sIcon = 'ui_jobs_iconJobResponse',
+	},
+	PortableIncinerator=
+	{
+		sName='MALERORESRCH0002TEXT',
+        sDesc='MALERORESRCH0002DESC',
+		tPrereqs={},
+	    nResearchUnits=1500,
+		sIcon = 'ui_jobs_iconJobDoctor',
+	},
+	MaintenanceToolsLevel1=
+	{
+		sName='MALERORESRCH0003L1TEXT',
+        sDesc='MALERORESRCH0003L1DESC',
+		tPrereqs={},
+	    nResearchUnits=1000,
+		nCriticalChance=0.1,
+		sIcon = 'ui_jobs_iconJobTechnician',
+	},
+	MaintenanceToolsLevel2=
+	{
+		sName='MALERORESRCH0003L2TEXT',
+        sDesc='MALERORESRCH0003L2DESC',
+		tPrereqs={
+			'MaintenanceToolsLevel1',
+		},
+	    nResearchUnits=2000,
+		nCriticalChance=0.2,
+		sIcon = 'ui_jobs_iconJobTechnician',
+	},
+	MaintenanceToolsLevel3=
+	{
+		sName='MALERORESRCH0003L3TEXT',
+        sDesc='MALERORESRCH0003L3DESC',
+		tPrereqs={
+			'MaintenanceToolsLevel2',
+		},
+	    nResearchUnits=3000,
+		nCriticalChance=0.3,
+		sIcon = 'ui_jobs_iconJobTechnician',
+	},
+	HumanResourcesLevel1=
+	{
+		sName='MALERORESRCH0004L1TEXT',
+	    sDesc='MALERORESRCH0004L1DESC',
+		tPrereqs={},
+	    nResearchUnits=1000,
+		nTransmissionSuccess=0.2,
+		sIcon = 'ui_jobs_iconJobTechnician',
+	},
+	HumanResourcesLevel2=
+	{
+		sName='MALERORESRCH0004L2TEXT',
+	    sDesc='MALERORESRCH0004L2DESC',
+		tPrereqs={
+			'HumanResourcesLevel1'
+		},
+	    nResearchUnits=2000,
+		nTransmissionSuccess=0.3,
+		sIcon = 'ui_jobs_iconJobTechnician',
+	},
+	HumanResourcesLevel3=
+	{
+		sName='MALERORESRCH0004L3TEXT',
+	    sDesc='MALERORESRCH0004L3DESC',
+		tPrereqs={
+			'HumanResourcesLevel2'
+		},
+	    nResearchUnits=3000,
+		nTransmissionSuccess=0.4,
+		sIcon = 'ui_jobs_iconJobTechnician',
+	},
+	HumanResourcesLevel4=
+	{
+		sName='MALERORESRCH0004L3TEXT',
+	    sDesc='MALERORESRCH0004L3DESC',
+		tPrereqs={
+			'HumanResourcesLevel3'
+		},
+	    nResearchUnits=4000,
+		nTransmissionSuccess=0.5,
+		sIcon = 'ui_jobs_iconJobTechnician',
+	},
+	-- DF Research
     VaporizeLevel2=
     {
         sName='RESRCH001TEXT',
@@ -16,7 +144,7 @@ local t=
         nResearchUnits=1200,
         nConditionMultiplier=1.5,
 		sIcon = 'ui_jobs_iconJobTechnician',
-    },
+    },	
     BuildLevel2=
     {
         sName='RESRCH011TEXT',

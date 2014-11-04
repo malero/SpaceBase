@@ -6,6 +6,8 @@ local UIElement = require('UI.UIElement')
 local TemplateButton = require('UI.TemplateButton')
 local DoorControls = require('UI.DoorControls')
 local EmergencyAlarmControls = require('UI.EmergencyAlarmControls')
+local KillbotControllerControls = require('UI.KillbotControllerControls')
+local ImmigrantTransmitterControls = require('UI.ImmigrantTransmitterControls')
 local InfirmaryBedControls = require('UI.InfirmaryBedControls')
 local TurretControls = require('UI.TurretControls')
 local ObjectList = require('ObjectList')
@@ -184,14 +186,20 @@ function m.create()
         Ob.Parent.init(self)
 		-- special, object-specific controls
         self.rEmergencyAlarmControls = EmergencyAlarmControls.new()
+		self.rKillbotControllerControls = KillbotControllerControls.new()
+		self.rImmigrantTransmitterControls = ImmigrantTransmitterControls.new()
         self.rInfirmaryBedControls = InfirmaryBedControls.new()
         self.rDoorControls = DoorControls.new()
         self.rTurretControls = TurretControls.new()
 		self:addElement(self.rEmergencyAlarmControls)
+		self:addElement(self.rKillbotControllerControls)
+		self:addElement(self.rImmigrantTransmitterControls)
 		self:addElement(self.rInfirmaryBedControls)
 		self:addElement(self.rDoorControls)
 		self:addElement(self.rTurretControls)
 		self:setElementHidden(self.rEmergencyAlarmControls, true)
+		self:setElementHidden(self.rKillbotControllerControls, true)
+		self:setElementHidden(self.rImmigrantTransmitterControls, true)
 		self:setElementHidden(self.rInfirmaryBedControls, true)
 		self:setElementHidden(self.rDoorControls, true)
 		self:setElementHidden(self.rTurretControls, true)
@@ -248,6 +256,10 @@ function m.create()
 			rCustomInspector = self.rDoorControls
 		elseif sCustomInspectorName == 'EmergencyAlarmControls' then
 			rCustomInspector = self.rEmergencyAlarmControls
+		elseif sCustomInspectorName == 'KillbotControllerControls' then
+			rCustomInspector = self.rKillbotControllerControls
+		elseif sCustomInspectorName == 'ImmigrantTransmitterControls' then
+			rCustomInspector = self.rImmigrantTransmitterControls
 		elseif sCustomInspectorName == 'InfirmaryBedControls' then
 			rCustomInspector = self.rInfirmaryBedControls
 		elseif sCustomInspectorName == 'TurretControls' then
