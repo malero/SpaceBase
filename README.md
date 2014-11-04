@@ -20,7 +20,7 @@ Some of these may seem too drastic, but I tried to balance the game for about 50
 5. Reduced the oxygen threshold in which citizens panic and stop doing everything.
 6. All corpses will be converted into body bags after you resume a game(sometimes they would bug out)
 
-** NEW RESEARCH PROJECTS **
+**NEW RESEARCH PROJECTS**
 
 *Room Lockdown*
 
