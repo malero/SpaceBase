@@ -55,7 +55,7 @@ You can build a terminal that will attempt to bring in new citizens. It costs 2,
 **NEW CONSTRUCTION ITEMS**
 
 1. The terminal for the human resources research project
-2. Killbot Controller - Allows you to make a Killbot for 5,000 matter(They can only be assigned to security. Added robot themed 30+ first/last names & Killbot space travel)
+2. Killbot Controller - Allows you to make a Killbot for 5,000 matter(They can only be assigned to security. Added 30+ robot themed first/last names & Killbot space travel)
 
 
 
