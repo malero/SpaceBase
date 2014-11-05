@@ -19,7 +19,7 @@ local nLabelX, nLabelStartY = 105, -288
 local nHotkeyX, nHotkeyStartY = nButtonWidth - 112, -330
 local nIconScale = .6
 
-local kHOTKEYS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "A", "B"}
+local kHOTKEYS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",}
 
 function m.create()
     local Ob = DFUtil.createSubclass(UIElement.create())
@@ -94,9 +94,14 @@ function m.create()
             
             -- also store the uppercase version because hey why not
             local uppercaseKeyCode = string.byte(string.upper(sKey))
+			
+			if uppercaseKeyCode == nil then return end
+
             self.tHotkeyButtons[uppercaseKeyCode] = rButton
         end
-    
+		
+		if keyCode == nil then return end
+
         self.tHotkeyButtons[keyCode] = rButton
     end
     

@@ -13,7 +13,7 @@ local GameRules = require('GameRules')
 local ObjectList = require('ObjectList')
 local TemplateButton = require('UI.TemplateButton')
 
-local sUILayoutFileName = 'UILayouts/KillbotControllerActionTabLayout'
+local sUILayoutFileName = 'UILayouts/ImmigrantTransmitterActionTabLayout'
 
 local tActionButtonData=
 {
